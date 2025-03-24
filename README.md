@@ -18,7 +18,7 @@ This is a Fullstack application with a **Spring Boot (Java 21)** backend and a *
 ---
 When the application starts for the first time, it checks if a default user exists:
 
-Email: teste@gmail.com
+Email: test@gmail.com
 
 Password: 12345678
 
