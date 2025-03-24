@@ -30,7 +30,7 @@ public class ProductServiceImpl implements ProductService {
 
     private final ProductRepository repository;
 
-    private static final String IMAGE_DIR = "C:/Java-Developer/React/order/public/images/";
+    private static final String IMAGE_DIR = "C:/Java-Developer/React/order-react/public/images/";
 
     public Page<ProductDTO> findAll(String name, int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
