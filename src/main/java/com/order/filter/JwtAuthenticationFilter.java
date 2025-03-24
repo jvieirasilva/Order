@@ -2,6 +2,8 @@ package com.order.filter;
 
 import java.io.IOException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -12,21 +14,23 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import com.order.serviceImpl.AuthenticationService;
 import com.order.serviceImpl.JwtService;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
 
 @Component
+@RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
+	
+	private static final Logger LOGGER = LoggerFactory.getLogger(JwtAuthenticationFilter.class);
 
-    @Autowired
-    private JwtService jwtService;
-
-    @Autowired
-    private UserDetailsService userDetailsService;
+    private final JwtService jwtService;
+    private final UserDetailsService userDetailsService;
 
     @Override
     protected void doFilterInternal(
@@ -45,10 +49,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         final String jwt;
         final String userEmail;
 
-        System.out.println("🛡️ JwtAuthenticationFilter acionado para path: " + path);
+        LOGGER.info("🛡️ JwtAuthenticationFilter acionado para path: " + path);
 
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-            System.out.println("❌ Header Authorization ausente ou inválido");
+        	LOGGER.info("❌ Header Authorization ausente ou inválido");
             filterChain.doFilter(request, response);
             return;
         }
@@ -57,10 +61,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         try {
             userEmail = jwtService.extractUsername(jwt);
-            System.out.println("🔐 Token extraído: " + jwt);
-            System.out.println("👤 Username extraído: " + userEmail);
+            LOGGER.info("🔐 Token extraído: " + jwt);
+            LOGGER.info("👤 Username extraído: " + userEmail);
         } catch (Exception e) {
-            System.out.println("❌ Erro ao extrair username do token: " + e.getMessage());
+        	LOGGER.info("❌ Erro ao extrair username do token: " + e.getMessage());
             filterChain.doFilter(request, response);
             return;
         }
@@ -80,15 +84,15 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 );
 
                 SecurityContextHolder.getContext().setAuthentication(authToken);
-                System.out.println("✅ Usuário autenticado: " + userDetails.getUsername());
+                LOGGER.info("✅ Usuário autenticado: " + userDetails.getUsername());
             } else {
-                System.out.println("❌ Token inválido para usuário: " + userEmail);
+            	LOGGER.info("❌ Token inválido para usuário: " + userEmail);
             }
         } else {
-            System.out.println("⚠️ Usuário já autenticado ou username nulo.");
+        	LOGGER.info("⚠️ Usuário já autenticado ou username nulo.");
         }
 
-        System.out.println("🔒 Autenticação no contexto: "
+        LOGGER.info("🔒 Autenticação no contexto: "
                 + (SecurityContextHolder.getContext().getAuthentication() != null));
 
         filterChain.doFilter(request, response);

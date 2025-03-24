@@ -12,10 +12,13 @@ import org.springframework.stereotype.Service;
 import com.order.dto.UserDTO;
 import com.order.model.Role;
 import com.order.model.User;
+import com.order.repository.ProductRepository;
 import com.order.repository.UserRepository;
 import com.order.request.AuthenticationRequest;
 import com.order.request.RegisterRequest;
 import com.order.response.AuthenticationResponse;
+
+import lombok.RequiredArgsConstructor;
 
 
 @Service

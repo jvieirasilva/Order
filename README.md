@@ -9,7 +9,7 @@ This is a Fullstack application with a **Spring Boot (Java 21)** backend and a *
 ## 🚀 How to Run the Application
 
 ### 1. Prerequisites
-- Java 17+
+- Java 21+
 - Maven 3.8+
 - A configured database (MySQL8)
 - (Optional) Postman or any HTTP client
@@ -57,8 +57,6 @@ Delete products
 All protected endpoints require a valid JWT token in the Authorization header.
 
 🔐 JWT Authentication
-Once logged in, you'll receive a JWT token. Use it to access secured endpoints by passing it in the Authorization header:
+Once logged in, you'll receive a JWT token. Use it to access secured endpoints by passing it in the Authorization header
 
-http
-Copiar
-Editar
+
